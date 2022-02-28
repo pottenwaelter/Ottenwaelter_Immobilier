@@ -11,11 +11,11 @@ import { retry, catchError } from 'rxjs/operators';
 })
 export class ApiService {
 
-  private subscriptionPath = 'http://dcm5.xyz/agence_immo/api-utilisateurs.php';
-  loginPath = 'http://dcm5.xyz/agence_immo/api-login.php';
-  contactPath = 'http://dcm5.xyz/agence_immo/api-contact.php';
-  dbContentPath = 'http://dcm5.xyz/agence_immo/api-db-content.php';
-  managementPath = 'http://dcm5.xyz/agence_immo/api-management.php';
+  private subscriptionPath = '*******';
+  loginPath = '*******';
+  contactPath = '*******';
+  dbContentPath = '*******';
+  managementPath = '*******';
 
   dbContent: any[] = [];
 
