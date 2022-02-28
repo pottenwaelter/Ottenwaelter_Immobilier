@@ -1,0 +1,83 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-title size="small" color="warning" class="ion-text-center">
+      Offre {{ identifiant }}
+    </ion-title>
+    <ion-buttons slot="end" (click)="closeModal()">
+      <ion-icon name="close" color="light" size="large"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="1">
+        <span class="slider-nav arrow-prev" (click)="slidePrev(slider,slideWithNav2)">
+          <div class="prev-icon-custom custom-nav" [class.disabled]="slider.isBeginningSlide"></div>
+        </span>
+      </ion-col>
+      <ion-col size="10">
+
+        <ion-slides pager="false" [options]="sliderOptions" #slideWithNav2
+          (ionSlideDidChange)="slideDidChange(slider,slideWithNav2)">
+          <ion-slide *ngFor="let s of slider.slidesItems; let i = index">
+            <img src="http://dcm5.xyz/agence_immo/uploads/{{s.name}}">
+          </ion-slide>
+        </ion-slides>
+
+      </ion-col>
+      <ion-col size="1">
+        <span class="slider-nav arrow-next" (click)="slideNext(slider,slideWithNav2)">
+          <div class="next-icon-custom custom-nav" [class.disabled]="slider.isEndSlide"></div>
+        </span>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-list-header><strong>Détails de l'offre</strong></ion-list-header>
+  <ion-list>
+    <ion-item><ion-label>Type d'offre : </ion-label>{{ typeOffre }}</ion-item>
+    <ion-item><ion-label>Type de bien : </ion-label>{{ typeBien }}</ion-item>
+    <ion-item><ion-label>Commune : </ion-label>{{ commune }}</ion-item>
+    <ion-item><ion-label>Code Postal : </ion-label>{{ codePostal }}</ion-item>
+    <ion-item><ion-label>Adresse : </ion-label>{{ adresse }}</ion-item>
+    <ion-item *ngIf="prixVente"><ion-label>Prix : <br /></ion-label>{{ prixVente }}€</ion-item>
+    <ion-item *ngIf="loyerLocation"><ion-label>Loyer : <br /></ion-label>{{ loyerLocation }}€ / mois</ion-item>
+    <ion-item><ion-textarea><ion-label style="margin-bottom: 10px;">Descriptif :</ion-label>{{ descriptifBien }}</ion-textarea></ion-item>
+    <ion-item *ngIf="typeOffre== 'location' && proprietaireLocation != '0'"><ion-label>Propriétaire : </ion-label>{{ proprietaireLocation }}</ion-item>
+    <ion-item *ngIf="typeOffre== 'location'"><ion-label>Charges locatives : </ion-label>{{ chargesLocation }}€</ion-item>
+    <ion-item *ngIf="typeOffre== 'location'"><ion-label>Loué : </ion-label>{{ loueLocation }}</ion-item>
+    <ion-item *ngIf="typeOffre== 'vente'"><ion-label>Taxes de vente : </ion-label>{{ taxesVente }}€</ion-item>
+    <ion-item *ngIf="typeOffre== 'vente'"><ion-label>Vendu : </ion-label>{{ venduVente }}</ion-item>
+    <ion-item *ngIf="numEtage"><ion-label>N° étage : </ion-label>{{ numEtage }}</ion-item>
+    <ion-item *ngIf="nbrEtages"><ion-label>Nombre d'étages : </ion-label>{{ nbrEtages }}</ion-item>
+    <ion-item><ion-label>Surface : </ion-label>{{ surfaceBien }}m²</ion-item>
+    <ion-item *ngIf="surfaceTerrain"><ion-label>Surface du terrain : </ion-label>{{ surfaceTerrain }}m²</ion-item>
+    <ion-item><ion-label>Pièces : </ion-label>{{ nbrPieces }}</ion-item>
+    <ion-item><ion-label>Chambres : </ion-label>{{ nbrChambres }}</ion-item>
+    <ion-item><ion-label>Salles de bains : </ion-label>{{ nbrSdb }}</ion-item>
+    <ion-item><ion-label>Toilettes : </ion-label>{{ nbrToilettes }}</ion-item>
+    <ion-item><ion-label>Placards : </ion-label>{{ nbrPlacards }}</ion-item>
+    <ion-item><ion-label>Cave : </ion-label>{{ cave }}</ion-item>
+    <ion-item *ngIf="cave == 'oui'"><ion-label>Surface de cave : </ion-label>{{ surfaceCave }}m²</ion-item>
+    <ion-item *ngIf="cave == 'oui'"><ion-textarea><ion-label style="margin-bottom: 10px;">Descriptif de la cave : </ion-label>{{ descriptifCave }}</ion-textarea></ion-item>
+    <ion-item><ion-label>Grenier : </ion-label>{{ grenier }}</ion-item>
+    <ion-item *ngIf="grenier == 'oui'"><ion-label>Surface de grenier : </ion-label>{{ surfaceGrenier }}m²</ion-item>
+    <ion-item *ngIf="grenier == 'oui'"><ion-textarea><ion-label style="margin-bottom: 10px;">Descriptif du grenier : </ion-label>{{ descriptifGrenier }}</ion-textarea></ion-item>
+    <ion-item><ion-label>Cuisine équipée : </ion-label>{{ cuisineEquipee }}</ion-item>
+    <ion-item><ion-label>Surface de cuisine : </ion-label>{{ surfaceCuisine }}m²</ion-item>
+    <ion-item><ion-label>Revêtement entrée : </ion-label>{{ revetementEntree }}</ion-item>
+    <ion-item><ion-label>Revêtement séjour : </ion-label>{{ revetementSejour }}</ion-item>
+    <ion-item><ion-label>Revêtement sdb : </ion-label>{{ revetementSdb }}</ion-item>
+    <ion-item><ion-label>Revêtement cuisine : </ion-label>{{ revetementCuisine }}</ion-item>
+    <ion-item><ion-label>Revêtement chambres : </ion-label>{{ revetementChambres }}</ion-item>
+    <ion-item><ion-label>Garage : </ion-label>{{ garage }}</ion-item>
+    <ion-item *ngIf="garage == 'oui'"><ion-label>Places de garage : </ion-label>{{ nbrPlacesGarage }}</ion-item>
+    <ion-item><ion-label>Parking : </ion-label>{{ parking }}</ion-item>
+    <ion-item *ngIf="parking == 'oui'"><ion-label>Places de parking : </ion-label>{{ nbrPlacesParking }}</ion-item>
+    <ion-item><ion-label>Année de construction : </ion-label>{{ anneeConstruction }}</ion-item>
+    <ion-item><ion-label>DPE : </ion-label>{{ dpe }}</ion-item>
+    <ion-item><ion-label>Référence du bien : </ion-label>{{ referenceBien }}</ion-item>
+    <ion-item><ion-label>Lien vidéo : </ion-label>{{ video }}</ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>  
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid color="dark" class="ion-margin" id="grid-connexion" *ngIf="!isAuth()">
+    <h4 class="ion-text-center">ACCUEIL</h4>
+    <ion-row id="row-connexion">
+      <ion-col>
+        <span class="deja">Vous n'avez pas de compte ?</span>
+        <ion-button [routerLink]="['/inscription']" expand="block" color="dark">S'INSCRIRE</ion-button>
+        <span class="divider line one-line">OU</span>
+        <span class="deja">Déjà membre ?</span>
+        <ion-button [routerLink]="['/connexion']" expand="block" color="warning">CONNEXION</ion-button>
+      </ion-col>
+    </ion-row>  
+  </ion-grid>
+  <ion-grid *ngIf="isAuth()" class="ion-margin ion-text-center">
+    <h4 class="ion-text-center">ACCUEIL</h4>
+    <ion-row>
+      <ion-col>
+        <ion-text style="font-size: 0.9em;">Bonjour, vous êtes connecté en tant que <strong> {{ prenom }} {{ nom }} </strong>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block" color="dark" (click)="logoutUser()">SE DÉCONNECTER</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <h5 class="ion-text-center offres-recentes">OFFRES LES PLUS RÉCENTES</h5>
+    <ion-card *ngFor="let item of dbContent | slice:0:3; let i = index" color="dark" class="ion-margin">
+      <img src="http://dcm5.xyz/agence_immo/uploads/{{ item.photo_0 }}">
+      <ion-card-header>
+        <ion-card-subtitle *ngIf="item.type_offre == 'vente'">À VENDRE</ion-card-subtitle>
+        <ion-card-subtitle *ngIf="item.type_offre == 'location'">À LOUER</ion-card-subtitle>
+        <ion-card-title>{{ (item.type_bien).charAt(0).toUpperCase() + (item.type_bien).slice(1) }} à {{ item.commune }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>{{ (item.descriptif_bien).substring(0, 100) }}...</ion-card-content>
+      <ion-grid>
+        <ion-row class="ion-justify-content-around card-maison-caracs">
+          <ion-col size="3">{{ item.surface_bien }} m²</ion-col>
+          <ion-col *ngIf="item.type_offre == 'vente'" size="3">{{ item.prix_vente }}€</ion-col>
+          <ion-col *ngIf="item.type_offre == 'location'" size="3">{{ item.loyer_location }}€ / mois</ion-col>
+          <ion-col size="3">{{ item.nbr_pieces }} pièces</ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-button expand="block" class="ion-margin" color="warning" (click)="openModal(item.id)">VOIR L'OFFRE</ion-button>
+    </ion-card>
+  <ion-footer>
+    <ion-toolbar color="dark">
+      <ion-icon name="arrow-up-outline" slot="start" class="ion-padding hover-pointer" style="font-size: 1.5em;" (click)="backToTop()"></ion-icon>
+      <ion-title size="small" class="mainTitle hover-pointer" mode="md" (click)="backToTop()">Retour en haut</ion-title>
+    </ion-toolbar>
+  </ion-footer>
+</ion-content>
+

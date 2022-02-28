@@ -1,0 +1,34 @@
+<ion-app>
+  <ion-menu side="start" menuId="first" contentId="main" color="dark">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item *ngIf="isAuth()" class="ion-text-center"><strong>Bonjour {{ prenom }} {{ nom }}</strong></ion-item>
+        <ion-menu-toggle><ion-item [routerLink]="['/home']">Accueil</ion-item></ion-menu-toggle>
+        <ion-menu-toggle><ion-item [routerLink]="['/location']">Location</ion-item></ion-menu-toggle>
+        <ion-menu-toggle><ion-item [routerLink]="['/vente']">Vente</ion-item></ion-menu-toggle>
+        <ion-menu-toggle><ion-item [routerLink]="['/contact']">Contact</ion-item></ion-menu-toggle>
+        <ion-menu-toggle *ngIf="!isAuth()"><ion-item [routerLink]="['/connexion']">Se connecter</ion-item></ion-menu-toggle>
+        <ion-menu-toggle *ngIf="isAuth()"><ion-item (click)="logoutUser()" [routerLink]="">Se déconnecter</ion-item></ion-menu-toggle>
+        <ion-menu-toggle *ngIf="isAdm()"><ion-item [routerLink]="['/administration']">Administration</ion-item></ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="main"></ion-router-outlet>
+  <ion-header [translucent]="true">
+    <ion-toolbar color="dark">
+      <ion-buttons slot="start" (click)="displayMenuEvent()">
+        <ion-menu-button color="light"> 
+        </ion-menu-button>
+      </ion-buttons>
+      <ion-title size="small" class="mainTitle" color="warning">
+        OTTENWAELTER Immobilier
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+</ion-app>
+

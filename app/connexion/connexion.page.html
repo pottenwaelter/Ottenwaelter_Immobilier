@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h5 class="ion-text-center">CONNEXION</h5>
+  <form (ngSubmit)="loginUser()" [formGroup]="formulaireConnexion">
+    
+    <ion-item lines="full">
+      <ion-label position="floating">E-mail</ion-label>
+      <ion-input type="email" formControlName="email"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of msgsErreur.email'>
+      <ng-container *ngIf='email.hasError(error.type) && (email.dirty || email.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Mot de passe</ion-label>
+      <ion-input type="password" formControlName="mdp"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of msgsErreur.mdp'>
+      <ng-container *ngIf='mdp.hasError(error.type) && (mdp.dirty || mdp.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" color="warning" expand="block" [disabled]="!formulaireConnexion.valid">SE CONNECTER</ion-button>
+      </ion-col>
+    </ion-row>
+
+  </form>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="ion-text-center" style="font-weight: bold; font-size: 0.9em;">Vous n'avez pas de compte ? <a [routerLink]="['/inscription']">Inscrivez-vous !</a></div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

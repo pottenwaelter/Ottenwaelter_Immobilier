@@ -1,0 +1,873 @@
+<ion-header>
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-button color="dark" expand="block" class="ion-margin" (click)="button1Clicked()">
+    Ajouter une offre
+  </ion-button>
+
+  <form *ngIf="button1State" (ngSubmit)="onSubmit()" [formGroup]="formulaireNouvelleOffre" novalidate enctype="multipart/form-data">
+    <ion-item lines="full">
+      <ion-label>Type d'offre</ion-label>
+      <ion-select placeholder="Choisir" okText="Ok" cancelText="Annuler" formControlName="type_offre">
+        <ion-select-option value="vente">Vente</ion-select-option>
+        <ion-select-option value="location">Location</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.type_offre'>
+      <ng-container *ngIf='type_offre.hasError(error.type) && (type_offre.dirty || type_offre.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label>Type de bien</ion-label>
+      <ion-select placeholder="Choisir" okText="Ok" cancelText="Annuler" formControlName="type_bien">
+        <ion-select-option value="maison">Maison</ion-select-option>
+        <ion-select-option value="appartement">Appartement</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.type_bien'>
+      <ng-container *ngIf='type_bien.hasError(error.type) && (type_bien.dirty || type_bien.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Descriptif du bien</ion-label>
+      <ion-textarea formControlName="descriptif_bien"></ion-textarea>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.descriptif_bien'>
+      <ng-container *ngIf='descriptif_bien.hasError(error.type) && (descriptif_bien.dirty || descriptif_bien.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full" *ngIf="type_offre.value == 'location'">
+      <ion-label position="floating">Loyer (€)</ion-label>
+      <ion-input type="number" formControlName="loyer"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full" *ngIf="type_offre.value == 'location'">
+      <ion-label position="floating">Charges locatives (€)</ion-label>
+      <ion-input type="number" formControlName="charges"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full" *ngIf="type_offre.value == 'vente'">
+      <ion-label position="floating">Prix (€)</ion-label>
+      <ion-input type="number" formControlName="prix"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full" *ngIf="type_offre.value == 'vente'">
+      <ion-label position="floating">Taxes de vente (€)</ion-label>
+      <ion-input type="number" formControlName="taxes"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Adresse</ion-label>
+      <ion-input type="text" formControlName="adresse"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.adresse'>
+      <ng-container *ngIf='adresse.hasError(error.type) && (adresse.dirty || adresse.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Code postal</ion-label>
+      <ion-input type="number" formControlName="code_postal"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.code_postal'>
+      <ng-container *ngIf='code_postal.hasError(error.type) && (code_postal.dirty || code_postal.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Commune</ion-label>
+      <ion-input type="text" formControlName="commune"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.commune'>
+      <ng-container *ngIf='commune.hasError(error.type) && (commune.dirty || commune.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Secteur</ion-label>
+      <ion-input type="text" formControlName="secteur"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.secteur'>
+      <ng-container *ngIf='secteur.hasError(error.type) && (secteur.dirty || secteur.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full" *ngIf="type_bien.value == 'appartement'">
+      <ion-label position="floating">Numéro de l'étage</ion-label>
+      <ion-input type="number" formControlName="num_etage"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full" *ngIf="type_bien.value == 'maison'">
+      <ion-label position="floating">Nombre d'étages</ion-label>
+      <ion-input type="number" formControlName="nbr_etages"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Surface du bien (m²)</ion-label>
+      <ion-input type="number" formControlName="surface_bien"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.surface_bien'>
+      <ng-container *ngIf='surface_bien.hasError(error.type) && (surface_bien.dirty || surface_bien.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full" *ngIf="type_bien.value == 'maison'">
+      <ion-label position="floating">Surface du terrain (m²)</ion-label>
+      <ion-input type="number" formControlName="surface_terrain"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nombre de pièces</ion-label>
+      <ion-input type="number" formControlName="nbr_pieces"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.nbr_pieces'>
+      <ng-container *ngIf='nbr_pieces.hasError(error.type) && (nbr_pieces.dirty || nbr_pieces.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nombre de chambres</ion-label>
+      <ion-input type="number" formControlName="nbr_chambres"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.nbr_chambres'>
+      <ng-container *ngIf='nbr_chambres.hasError(error.type) && (nbr_chambres.dirty || nbr_chambres.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nombre de salles de bains</ion-label>
+      <ion-input type="number" formControlName="nbr_sdb"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.nbr_sdb'>
+      <ng-container *ngIf='nbr_sdb.hasError(error.type) && (nbr_sdb.dirty || nbr_sdb.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nombre de toilettes</ion-label>
+      <ion-input type="number" formControlName="nbr_toilettes"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.nbr_toilettes'>
+      <ng-container *ngIf='nbr_toilettes.hasError(error.type) && (nbr_toilettes.dirty || nbr_toilettes.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nombre de placards</ion-label>
+      <ion-input type="number" formControlName="nbr_placards"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.nbr_placards'>
+      <ng-container *ngIf='nbr_placards.hasError(error.type) && (nbr_placards.dirty || nbr_placards.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label>Cave</ion-label>
+      <ion-select okText="Ok" cancelText="Annuler" formControlName="cave_oui_non">
+        <ion-select-option value="oui">Oui</ion-select-option>
+        <ion-select-option value="non">Non</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.cave_oui_non'>
+      <ng-container *ngIf='cave_oui_non.hasError(error.type) && (cave_oui_non.dirty || cave_oui_non.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full" *ngIf="cave_oui_non.value == 'oui'">
+      <ion-label position="floating">Surface de la cave (m²)</ion-label>
+      <ion-input type="number" formControlName="surface_cave"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full" *ngIf="cave_oui_non.value == 'oui'">
+      <ion-label position="floating">Descriptif de la cave</ion-label>
+      <ion-textarea formControlName="descriptif_cave"></ion-textarea>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label>Grenier</ion-label>
+      <ion-select okText="Ok" cancelText="Annuler" formControlName="grenier_oui_non">
+        <ion-select-option value="oui">Oui</ion-select-option>
+        <ion-select-option value="non">Non</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.grenier_oui_non'>
+      <ng-container *ngIf='grenier_oui_non.hasError(error.type) && (grenier_oui_non.dirty || grenier_oui_non.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full" *ngIf="grenier_oui_non.value == 'oui'">
+      <ion-label position="floating">Surface du grenier (m²)</ion-label>
+      <ion-input type="number" formControlName="surface_grenier"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full" *ngIf="grenier_oui_non.value == 'oui'">
+      <ion-label position="floating">Descriptif du grenier</ion-label>
+      <ion-textarea formControlName="descriptif_grenier"></ion-textarea>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label>Cuisine équipée</ion-label>
+      <ion-select okText="Ok" cancelText="Annuler" formControlName="cuisine_equipee">
+        <ion-select-option value="oui">Oui</ion-select-option>
+        <ion-select-option value="non">Non</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.cuisine_equipee'>
+      <ng-container *ngIf='cuisine_equipee.hasError(error.type) && (cuisine_equipee.dirty || cuisine_equipee.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Surface de la cuisine (m²)</ion-label>
+      <ion-input type="number" formControlName="surface_cuisine"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.surface_cuisine'>
+      <ng-container *ngIf='surface_cuisine.hasError(error.type) && (surface_cuisine.dirty || surface_cuisine.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Revêtement entrée</ion-label>
+      <ion-input type="text" formControlName="revetement_entree"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.revetement_entree'>
+      <ng-container *ngIf='revetement_entree.hasError(error.type) && (revetement_entree.dirty || revetement_entree.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Revêtement salon</ion-label>
+      <ion-input type="text" formControlName="revetement_salon"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.revetement_salon'>
+      <ng-container *ngIf='revetement_salon.hasError(error.type) && (revetement_salon.dirty || revetement_salon.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Revêtement séjour</ion-label>
+      <ion-input type="text" formControlName="revetement_sejour"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.revetement_sejour'>
+      <ng-container *ngIf='revetement_sejour.hasError(error.type) && (revetement_sejour.dirty || revetement_sejour.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Revêtement cuisine</ion-label>
+      <ion-input type="text" formControlName="revetement_cuisine"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.revetement_cuisine'>
+      <ng-container *ngIf='revetement_cuisine.hasError(error.type) && (revetement_cuisine.dirty || revetement_cuisine.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Revêtement salle de bains</ion-label>
+      <ion-input type="text" formControlName="revetement_sdb"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.revetement_sdb'>
+      <ng-container *ngIf='revetement_sdb.hasError(error.type) && (revetement_sdb.dirty || revetement_sdb.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Revêtement chambres</ion-label>
+      <ion-input type="text" formControlName="revetement_chambres"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.revetement_chambres'>
+      <ng-container *ngIf='revetement_chambres.hasError(error.type) && (revetement_chambres.dirty || revetement_chambres.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label>Garage</ion-label>
+      <ion-select okText="Ok" cancelText="Annuler" formControlName="garage">
+        <ion-select-option value="oui">Oui</ion-select-option>
+        <ion-select-option value="non">Non</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.garage'>
+      <ng-container *ngIf='garage.hasError(error.type) && (garage.dirty || garage.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full" *ngIf="garage.value == 'oui'">
+      <ion-label position="floating">Places de garage</ion-label>
+      <ion-input type="number" formControlName="nbr_places_garage"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label>Parking</ion-label>
+      <ion-select okText="Ok" cancelText="Annuler" formControlName="parking">
+        <ion-select-option value="oui">Oui</ion-select-option>
+        <ion-select-option value="non">Non</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.parking'>
+      <ng-container *ngIf='parking.hasError(error.type) && (parking.dirty || parking.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full"  *ngIf="parking.value == 'oui'">
+      <ion-label position="floating">Places de parking</ion-label>
+      <ion-input type="number" formControlName="nbr_places_parking"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Année de construction</ion-label>
+      <ion-input type="number" formControlName="annee_construction"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.annee_construction'>
+      <ng-container *ngIf='annee_construction.hasError(error.type) && (annee_construction.dirty || annee_construction.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">DPE</ion-label>
+      <ion-input type="text" formControlName="dpe"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.dpe'>
+      <ng-container *ngIf='dpe.hasError(error.type) && (dpe.dirty || dpe.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Référence du bien</ion-label>
+      <ion-input type="number" formControlName="reference_bien"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.reference_bien'>
+      <ng-container *ngIf='reference_bien.hasError(error.type) && (reference_bien.dirty || reference_bien.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full"  *ngIf="type_offre.value == 'location'">
+      <ion-label>Loué</ion-label>
+      <ion-select okText="Ok" cancelText="Annuler" formControlName="loue_location">
+        <ion-select-option value="oui">Oui</ion-select-option>
+        <ion-select-option value="non">Non</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item lines="full" *ngIf="type_offre.value == 'vente'">
+      <ion-label>Vendu</ion-label>
+      <ion-select okText="Ok" cancelText="Annuler" formControlName="vendu_vente">
+        <ion-select-option value="oui">Oui</ion-select-option>
+        <ion-select-option value="non">Non</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label>Visible sur le site</ion-label>
+      <ion-select okText="Ok" cancelText="Annuler" formControlName="visible">
+        <ion-select-option value="oui">Oui</ion-select-option>
+        <ion-select-option value="non">Non</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.visible'>
+      <ng-container *ngIf='visible.hasError(error.type) && (visible.dirty || visible.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Lien vidéo</ion-label>
+      <ion-input type="text" formControlName="video"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.video'>
+      <ng-container *ngIf='video.hasError(error.type) && (video.dirty || video.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label>Choisir une photo</ion-label>
+      <input type="file" formControlName="photo" (change)="selectedImage($event)">
+    </ion-item>
+    <div *ngFor='let error of errorMessages.photo'>
+      <ng-container *ngIf='photo.hasError(error.type) && (photo.dirty || photo.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-button type="submit" color="warning" expand="block" class="ion-margin" [disabled]="!formulaireNouvelleOffre.valid">POSTER L'OFFRE</ion-button>
+  </form>
+
+  <ion-button color="dark" expand="block" class="ion-margin" (click)="button2Clicked()">
+    Mettre à jour une offre
+  </ion-button>
+
+  <form *ngIf="button2State" novalidate [formGroup]="formulaireChoixOffre">
+    <ion-item>
+      <ion-label>Choisir l'offre à mettre à jour</ion-label>
+      <ion-select formControlName="id_offre_update" (ionChange)="displayUpdateForm()">
+        <ion-select-option *ngFor="let item of dbContent" value="{{ item.id }}">{{ item.type_bien }} à {{ item.commune }} : {{ item.adresse }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </form>
+
+  <form *ngIf="idForUpdate && button2State" novalidate [formGroup]="formulaireOffre">
+    <ion-item lines="full">
+      <ion-label>Type d'offre</ion-label>
+      <ion-select placeholder="Choisir" okText="Ok" cancelText="Annuler" formControlName="type_offreUpdate">
+        <ion-select-option value="vente">Vente</ion-select-option>
+        <ion-select-option value="location">Location</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor='let error of updateErrorMessages.type_offreUpdate'>
+      <ng-container *ngIf='type_offreUpdate.hasError(error.type) && (type_offreUpdate.dirty || type_offreUpdate.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label>Type de bien</ion-label>
+      <ion-select placeholder="Choisir" okText="Ok" cancelText="Annuler" formControlName="type_bienUpdate">
+        <ion-select-option value="maison">Maison</ion-select-option>
+        <ion-select-option value="appartement">Appartement</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor='let error of updateErrorMessages.type_bienUpdate'>
+      <ng-container *ngIf='type_bienUpdate.hasError(error.type) && (type_bienUpdate.dirty || type_bienUpdate.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Descriptif du bien</ion-label>
+      <ion-textarea formControlName="descriptif_bienUpdate" value="{{ descriptifBienToUpdate }}"></ion-textarea>
+    </ion-item>
+    <div *ngFor='let error of updateErrorMessages.descriptif_bienUpdate'>
+      <ng-container *ngIf='descriptif_bienUpdate.hasError(error.type) && (descriptif_bienUpdate.dirty || descriptif_bienUpdate.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full" *ngIf="type_offre.value == 'location'">
+      <ion-label position="floating">Loyer (€)</ion-label>
+      <ion-input type="number" formControlName="loyer"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full" *ngIf="type_offre.value == 'location'">
+      <ion-label position="floating">Charges locatives (€)</ion-label>
+      <ion-input type="number" formControlName="charges"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full" *ngIf="type_offre.value == 'vente'">
+      <ion-label position="floating">Prix (€)</ion-label>
+      <ion-input type="number" formControlName="prix"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full" *ngIf="type_offre.value == 'vente'">
+      <ion-label position="floating">Taxes de vente (€)</ion-label>
+      <ion-input type="number" formControlName="taxes"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Adresse</ion-label>
+      <ion-input type="text" formControlName="adresse"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.adresse'>
+      <ng-container *ngIf='adresse.hasError(error.type) && (adresse.dirty || adresse.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Code postal</ion-label>
+      <ion-input type="number" formControlName="code_postal"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.code_postal'>
+      <ng-container *ngIf='code_postal.hasError(error.type) && (code_postal.dirty || code_postal.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Commune</ion-label>
+      <ion-input type="text" formControlName="commune"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.commune'>
+      <ng-container *ngIf='commune.hasError(error.type) && (commune.dirty || commune.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Secteur</ion-label>
+      <ion-input type="text" formControlName="secteur"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.secteur'>
+      <ng-container *ngIf='secteur.hasError(error.type) && (secteur.dirty || secteur.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full" *ngIf="type_bien.value == 'appartement'">
+      <ion-label position="floating">Numéro de l'étage</ion-label>
+      <ion-input type="number" formControlName="num_etage"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full" *ngIf="type_bien.value == 'maison'">
+      <ion-label position="floating">Nombre d'étages</ion-label>
+      <ion-input type="number" formControlName="nbr_etages"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Surface du bien (m²)</ion-label>
+      <ion-input type="number" formControlName="surface_bien"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.surface_bien'>
+      <ng-container *ngIf='surface_bien.hasError(error.type) && (surface_bien.dirty || surface_bien.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full" *ngIf="type_bien.value == 'maison'">
+      <ion-label position="floating">Surface du terrain (m²)</ion-label>
+      <ion-input type="number" formControlName="surface_terrain"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nombre de pièces</ion-label>
+      <ion-input type="number" formControlName="nbr_pieces"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.nbr_pieces'>
+      <ng-container *ngIf='nbr_pieces.hasError(error.type) && (nbr_pieces.dirty || nbr_pieces.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nombre de chambres</ion-label>
+      <ion-input type="number" formControlName="nbr_chambres"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.nbr_chambres'>
+      <ng-container *ngIf='nbr_chambres.hasError(error.type) && (nbr_chambres.dirty || nbr_chambres.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nombre de salles de bains</ion-label>
+      <ion-input type="number" formControlName="nbr_sdb"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.nbr_sdb'>
+      <ng-container *ngIf='nbr_sdb.hasError(error.type) && (nbr_sdb.dirty || nbr_sdb.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nombre de toilettes</ion-label>
+      <ion-input type="number" formControlName="nbr_toilettes"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.nbr_toilettes'>
+      <ng-container *ngIf='nbr_toilettes.hasError(error.type) && (nbr_toilettes.dirty || nbr_toilettes.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nombre de placards</ion-label>
+      <ion-input type="number" formControlName="nbr_placards"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.nbr_placards'>
+      <ng-container *ngIf='nbr_placards.hasError(error.type) && (nbr_placards.dirty || nbr_placards.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label>Cave</ion-label>
+      <ion-select okText="Ok" cancelText="Annuler" formControlName="cave_oui_non">
+        <ion-select-option value="oui">Oui</ion-select-option>
+        <ion-select-option value="non">Non</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.cave_oui_non'>
+      <ng-container *ngIf='cave_oui_non.hasError(error.type) && (cave_oui_non.dirty || cave_oui_non.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full" *ngIf="cave_oui_non.value == 'oui'">
+      <ion-label position="floating">Surface de la cave (m²)</ion-label>
+      <ion-input type="number" formControlName="surface_cave"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full" *ngIf="cave_oui_non.value == 'oui'">
+      <ion-label position="floating">Descriptif de la cave</ion-label>
+      <ion-textarea formControlName="descriptif_cave"></ion-textarea>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label>Grenier</ion-label>
+      <ion-select okText="Ok" cancelText="Annuler" formControlName="grenier_oui_non">
+        <ion-select-option value="oui">Oui</ion-select-option>
+        <ion-select-option value="non">Non</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.grenier_oui_non'>
+      <ng-container *ngIf='grenier_oui_non.hasError(error.type) && (grenier_oui_non.dirty || grenier_oui_non.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full" *ngIf="grenier_oui_non.value == 'oui'">
+      <ion-label position="floating">Surface du grenier (m²)</ion-label>
+      <ion-input type="number" formControlName="surface_grenier"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full" *ngIf="grenier_oui_non.value == 'oui'">
+      <ion-label position="floating">Descriptif du grenier</ion-label>
+      <ion-textarea formControlName="descriptif_grenier"></ion-textarea>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label>Cuisine équipée</ion-label>
+      <ion-select okText="Ok" cancelText="Annuler" formControlName="cuisine_equipee">
+        <ion-select-option value="oui">Oui</ion-select-option>
+        <ion-select-option value="non">Non</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.cuisine_equipee'>
+      <ng-container *ngIf='cuisine_equipee.hasError(error.type) && (cuisine_equipee.dirty || cuisine_equipee.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Surface de la cuisine (m²)</ion-label>
+      <ion-input type="number" formControlName="surface_cuisine"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.surface_cuisine'>
+      <ng-container *ngIf='surface_cuisine.hasError(error.type) && (surface_cuisine.dirty || surface_cuisine.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Revêtement entrée</ion-label>
+      <ion-input type="text" formControlName="revetement_entree"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.revetement_entree'>
+      <ng-container *ngIf='revetement_entree.hasError(error.type) && (revetement_entree.dirty || revetement_entree.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Revêtement salon</ion-label>
+      <ion-input type="text" formControlName="revetement_salon"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.revetement_salon'>
+      <ng-container *ngIf='revetement_salon.hasError(error.type) && (revetement_salon.dirty || revetement_salon.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Revêtement séjour</ion-label>
+      <ion-input type="text" formControlName="revetement_sejour"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.revetement_sejour'>
+      <ng-container *ngIf='revetement_sejour.hasError(error.type) && (revetement_sejour.dirty || revetement_sejour.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Revêtement cuisine</ion-label>
+      <ion-input type="text" formControlName="revetement_cuisine"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.revetement_cuisine'>
+      <ng-container *ngIf='revetement_cuisine.hasError(error.type) && (revetement_cuisine.dirty || revetement_cuisine.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Revêtement salle de bains</ion-label>
+      <ion-input type="text" formControlName="revetement_sdb"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.revetement_sdb'>
+      <ng-container *ngIf='revetement_sdb.hasError(error.type) && (revetement_sdb.dirty || revetement_sdb.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Revêtement chambres</ion-label>
+      <ion-input type="text" formControlName="revetement_chambres"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.revetement_chambres'>
+      <ng-container *ngIf='revetement_chambres.hasError(error.type) && (revetement_chambres.dirty || revetement_chambres.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label>Garage</ion-label>
+      <ion-select okText="Ok" cancelText="Annuler" formControlName="garage">
+        <ion-select-option value="oui">Oui</ion-select-option>
+        <ion-select-option value="non">Non</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.garage'>
+      <ng-container *ngIf='garage.hasError(error.type) && (garage.dirty || garage.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full" *ngIf="garage.value == 'oui'">
+      <ion-label position="floating">Places de garage</ion-label>
+      <ion-input type="number" formControlName="nbr_places_garage"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label>Parking</ion-label>
+      <ion-select okText="Ok" cancelText="Annuler" formControlName="parking">
+        <ion-select-option value="oui">Oui</ion-select-option>
+        <ion-select-option value="non">Non</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.parking'>
+      <ng-container *ngIf='parking.hasError(error.type) && (parking.dirty || parking.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full"  *ngIf="parking.value == 'oui'">
+      <ion-label position="floating">Places de parking</ion-label>
+      <ion-input type="number" formControlName="nbr_places_parking"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Année de construction</ion-label>
+      <ion-input type="number" formControlName="annee_construction"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.annee_construction'>
+      <ng-container *ngIf='annee_construction.hasError(error.type) && (annee_construction.dirty || annee_construction.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">DPE</ion-label>
+      <ion-input type="text" formControlName="dpe"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.dpe'>
+      <ng-container *ngIf='dpe.hasError(error.type) && (dpe.dirty || dpe.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Référence du bien</ion-label>
+      <ion-input type="number" formControlName="reference_bien"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.reference_bien'>
+      <ng-container *ngIf='reference_bien.hasError(error.type) && (reference_bien.dirty || reference_bien.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full"  *ngIf="type_offre.value == 'location'">
+      <ion-label>Loué</ion-label>
+      <ion-select okText="Ok" cancelText="Annuler" formControlName="loue_location">
+        <ion-select-option value="oui">Oui</ion-select-option>
+        <ion-select-option value="non">Non</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item lines="full" *ngIf="type_offre.value == 'vente'">
+      <ion-label>Vendu</ion-label>
+      <ion-select okText="Ok" cancelText="Annuler" formControlName="vendu_vente">
+        <ion-select-option value="oui">Oui</ion-select-option>
+        <ion-select-option value="non">Non</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label>Visible sur le site</ion-label>
+      <ion-select okText="Ok" cancelText="Annuler" formControlName="visible">
+        <ion-select-option value="oui">Oui</ion-select-option>
+        <ion-select-option value="non">Non</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.visible'>
+      <ng-container *ngIf='visible.hasError(error.type) && (visible.dirty || visible.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Lien vidéo</ion-label>
+      <ion-input type="text" formControlName="video"></ion-input>
+    </ion-item>
+    <div *ngFor='let error of errorMessages.video'>
+      <ng-container *ngIf='video.hasError(error.type) && (video.dirty || video.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label>Choisir une photo</ion-label>
+      <input type="file" formControlName="photo" (change)="selectedImage($event)">
+    </ion-item>
+    <div *ngFor='let error of errorMessages.photo'>
+      <ng-container *ngIf='photo.hasError(error.type) && (photo.dirty || photo.touched)'>
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+  </form>
+
+  <ion-button color="dark" expand="block" class="ion-margin" (click)="button3Clicked()">
+    Supprimer une offre
+  </ion-button>
+
+  <form *ngIf="button3State"  (ngSubmit)="validatePopUp()"  novalidate [formGroup]="formulaireSuppression">
+    <ion-item>
+      <ion-label>Choisir l'offre à supprimer</ion-label>
+      <ion-select formControlName="id_offre">
+        <ion-select-option *ngFor="let item of dbContent" value="{{ item.id }}">{{ item.type_bien }} à {{ item.commune }} : {{ item.adresse }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-button type="submit" color="warning" expand="block" class="ion-margin" [disabled]="!formulaireSuppression.valid">SUPPRIMER L'OFFRE</ion-button>
+  </form>
+</ion-content>

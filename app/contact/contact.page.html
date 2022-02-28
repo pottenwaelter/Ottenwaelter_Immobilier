@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h5 class="ion-text-center">CONTACTEZ-NOUS</h5>
+  <ion-grid class="ion-text-center">
+    <ion-row>
+      <ion-col>
+        <p class="ion-padding" style="font-size: 0.9em; font-weight: bold;">Pour toute demande, veuillez-remplir le formulaire ci-dessous</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <form (ngSubmit)="onSubmit()" [formGroup]="formulaireContact" novalidate>
+    <ion-item>
+      <ion-label position="floating">Prénom</ion-label>
+      <ion-input type="text" formControlName="prenom"></ion-input>
+    </ion-item>
+    <div *ngFor="let error of msgsErreur.prenom">
+      <ng-container *ngIf="prenom.hasError(error.type) && (prenom.touched || prenom.dirty)">
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating">Nom</ion-label>
+      <ion-input type="text" formControlName="nom"></ion-input>
+    </ion-item>
+    <div *ngFor="let error of msgsErreur.nom">
+      <ng-container *ngIf="nom.hasError(error.type) && (nom.touched || nom.dirty)">
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating">E-mail</ion-label>
+      <ion-input type="email" formControlName="email"></ion-input>
+    </ion-item>
+    <div *ngFor="let error of msgsErreur.email">
+      <ng-container *ngIf="email.hasError(error.type) && (email.touched || email.dirty)">
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating">Téléphone</ion-label>
+      <ion-input type="text" formControlName="tel"></ion-input>
+    </ion-item>
+    <div *ngFor="let error of msgsErreur.tel">
+      <ng-container *ngIf="tel.hasError(error.type) && (tel.touched || tel.dirty)">
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating">Demande</ion-label>
+      <ion-textarea formControlName="demande"></ion-textarea>
+    </ion-item>
+    <div *ngFor="let error of msgsErreur.demande">
+      <ng-container *ngIf="demande.hasError(error.type) && (demande.touched || demande.dirty)">
+        <small class="error-message">{{ error.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-button [disabled]="!formulaireContact.valid" type="submit" color="dark" expand="block">ENVOYER</ion-button>
+        </ion-col>
+      </ion-row>
+  </ion-grid>
+  </form>
+</ion-content>

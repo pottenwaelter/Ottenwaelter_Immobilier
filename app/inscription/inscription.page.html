@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h5 class="ion-text-center">INSCRIPTION</h5>
+  <form (ngSubmit)="onSubmit()" [formGroup]="formulaireInscription" novalidate>
+    <ion-item lines="full">
+      <ion-label position="floating">Prénom</ion-label>
+      <ion-input type="text" formControlName="prenom"></ion-input>
+    </ion-item>
+    <div *ngFor="let error of msgErreur.prenom">
+      <ng-container *ngIf="prenom.hasError(error.type) && (prenom.dirty || prenom.touched)">
+        <small class="error-message">{{error.message}}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nom</ion-label>
+      <ion-input type="text" formControlName="nom"></ion-input>
+    </ion-item>
+    <div *ngFor="let error of msgErreur.nom">
+      <ng-container *ngIf="nom.hasError(error.type) && (nom.dirty || nom.touched)">
+        <small class="error-message">{{error.message}}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">E-mail</ion-label>
+      <ion-input type="email" formControlName="email"></ion-input>
+    </ion-item>
+    <div *ngFor="let error of msgErreur.email">
+      <ng-container *ngIf="email.hasError(error.type) && (email.dirty || email.touched)">
+        <small class="error-message">{{error.message}}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Téléphone</ion-label>
+      <ion-input type="tel" formControlName="tel"></ion-input>
+    </ion-item>
+    <div *ngFor="let error of msgErreur.tel">
+      <ng-container *ngIf="tel.hasError(error.type) && (tel.dirty || tel.touched)">
+        <small class="error-message">{{error.message}}</small>
+      </ng-container>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Mot de passe</ion-label>
+      <ion-input type="password" formControlName="mdp"></ion-input>
+    </ion-item>
+    <div *ngFor="let error of msgErreur.mdp">
+      <ng-container *ngIf="mdp.hasError(error.type) && (mdp.dirty || mdp.touched)">
+        <small class="error-message">{{error.message}}</small>
+      </ng-container>
+    </div>
+
+    <ion-row>
+      <ion-col>
+        <ion-button [disabled]="!formulaireInscription.valid" type="submit" color="dark" expand="block">S'INSCRIRE</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="ion-text-center" style="font-weight: bold; font-size: 0.9em;">Déjà membre ? <a [routerLink]="['/connexion']">Connectez-vous !</a></div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
